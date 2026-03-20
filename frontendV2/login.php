@@ -1,9 +1,9 @@
 <?php
-$host = "localhost";
+$host = "localhost:8080";
 $user = "root";
 <?php
 // 1. Conexión a la base de datos
-$conexion = mysqli_connect("localhost", "root", "", "alumnos");
+$conexion = mysqli_connect("localhost:8080", "root", "", "alumnos");
 
 // 2. Recibir datos del formulario
 $cuenta = $_POST['num_cuenta'];
@@ -22,7 +22,6 @@ if (mysqli_num_rows($resultado) > 0) {
     // Si fallan, avisa y regresa al login
     echo "<script>alert('Datos incorrectos'); window.location.href='frontend.html';</script>";
 }
-?>
 $pass = "";
 $db   = "alumnos";
 
@@ -42,3 +41,5 @@ if (mysqli_num_rows($resultado) > 0) {
 }
 <a href="chart.html" class="back-link">Volver</a>
 
+
+?>
