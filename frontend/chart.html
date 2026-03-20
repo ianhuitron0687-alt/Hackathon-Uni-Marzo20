@@ -28,16 +28,42 @@
         }
 
         .logo {
-            position: absolute;
-            top: 180px;
+            position: fixed;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             width: 500px;
             max-width: 85%;
             opacity: 0.4;
             z-index: 0;
             pointer-events: none;
         }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: var(--size, 10px);
+            height: var(--size, 10px);
+            background: rgba(255, 255, 255, 0.68);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.28);
+            animation: bubbleUp var(--duration, 16s) linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 9%; --size: 8px; --duration: 13s; animation-delay: -2s; }
+        .particle:nth-child(2) { left: 19%; --size: 14px; --duration: 18s; animation-delay: -8s; }
+        .particle:nth-child(3) { left: 31%; --size: 10px; --duration: 15s; animation-delay: -5s; }
+        .particle:nth-child(4) { left: 44%; --size: 18px; --duration: 20s; animation-delay: -11s; }
+        .particle:nth-child(5) { left: 58%; --size: 9px; --duration: 14s; animation-delay: -4s; }
+        .particle:nth-child(6) { left: 70%; --size: 16px; --duration: 22s; animation-delay: -9s; }
+        .particle:nth-child(7) { left: 83%; --size: 11px; --duration: 17s; animation-delay: -6s; }
+        .particle:nth-child(8) { left: 92%; --size: 13px; --duration: 19s; animation-delay: -13s; }
 
         .page {
             position: relative;
@@ -217,15 +243,40 @@
                 text-align: left;
             }
         }
+
+        @keyframes bubbleUp {
+            0% {
+                transform: translateY(110vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.62;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(18px) rotate(220deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+    </div>
+
     <img src="unam.png" alt="Logo UNAM" class="logo">
 
     <div class="page">
         <div class="header-card">
             <h1>Documentos a subir y estatus de titulacion</h1>
-            <p>Semaforo de validacion: verde = correcta, amarillo = en proceso, rojo = no correcta.</p>
+            <p>Semaforo de validacion: verde = válido, amarillo = en revisión rojo = inválido</p>
         </div>
 
         <ul class="status-list">
@@ -466,6 +517,11 @@
     </div>
 
     <script>
+        const navigationEntries = performance.getEntriesByType("navigation");
+        if (navigationEntries.length > 0 && navigationEntries[0].type === "reload") {
+            window.location.replace("frontend.html");
+        }
+
         const MAX_FILE_SIZE = 5 * 1024 * 1024;
         const DEFAULT_LIGHT_COLOR = "#7d8798";
 
