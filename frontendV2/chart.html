@@ -333,7 +333,7 @@
         <span class="particle"></span>
     </div>
 
-    <img src="unam.png" alt="Logo UNAM" class="logo">
+    <img src="UNAM.png" alt="Logo UNAM" class="logo">
 
     <div class="page">
         <div class="header-card">
@@ -579,7 +579,7 @@
             <button type="button" class="submit-button" onclick="openConfirm()">Solicitar tramite</button>
         </div>
 
-        <a href="frontend.html" class="back-link">Volver</a>
+        <a href="index.html" class="back-link">Volver</a>
     </div>
 
     <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirm()"></div>
@@ -595,7 +595,7 @@
     <script>
         const navigationEntries = performance.getEntriesByType("navigation");
         if (navigationEntries.length > 0 && navigationEntries[0].type === "reload") {
-            window.location.replace("frontend.html");
+            window.location.replace("index.html");
         }
 
         const MAX_FILE_SIZE = 5 * 1024 * 1024;
