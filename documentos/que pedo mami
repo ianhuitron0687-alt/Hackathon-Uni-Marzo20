@@ -42,3 +42,24 @@ if (!$conexion) {
     die("Error de conexión: " . mysqli_connect_error());
 }
 ?>
+
+----------------------------------------------------------------------------------------------------------------------------
+// ... código previo de conexión y consulta ...
+
+if (mysqli_num_rows($resultado) > 0) {
+    // Esta línea es la que "une" las páginas tras el éxito
+    header("Location: chart.html");
+    exit(); 
+} else {
+    // Si los datos no existen en la tabla 'cuentas'
+    echo "<script>alert('Usuario o contraseña incorrectos'); window.location.href='frontend.html';</script>";
+}
+
+
+<a href="frontend.html" class="back-link">Volver</a>
+
+
+
+
+
+
