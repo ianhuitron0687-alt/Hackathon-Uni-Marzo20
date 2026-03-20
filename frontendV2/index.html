@@ -346,9 +346,10 @@
             const errorCard = document.getElementById("errorCard");
 
             if (matricula === "323332855" && contrasena === "24092007") {
-                window.location.href = "chart.html";
-                return;
-            }
+            // REDIRECCIÓN CORREGIDA CON LA RUTA DE LA CARPETA
+            window.location.href = "frontendV2/chart.html"; 
+            return;
+        }
 
             errorCard.style.display = "block";
         }
