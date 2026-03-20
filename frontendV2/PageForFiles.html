@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatus de titulacion</title>
+    <style>
+        /* Tus estilos existentes se mantienen */
+        :root {
+            --gold-start: #ffc400;
+            --gold-end: #c27503;
+            --bg-start: #16315f;
+            --bg-end: #2a5298;
+            --green: #31d27c;
+            --yellow: #ffd24d;
+            --red: #ff5f5f;
+        }
+
+        body {
+            position: relative;
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            color: white;
+            padding: 32px 16px 48px;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            position: absolute;
+            top: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            max-width: 85%;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(1180px, 100%);
+            margin: 0 auto;
+        }
+
+        .header-card {
+            background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
+            color: black;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .header-card h1 {
+            margin: 0 0 8px;
+        }
+
+        .header-card p {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .status-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .status-card {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 18px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .status-card h2 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .status-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .traffic-light {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .status-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            min-width: 180px;
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .upload-button {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
+            transition: transform 0.2s;
+        }
+
+        .upload-button:hover {
+            transform: scale(1.05);
+        }
+
+        .upload-button:active {
+            transform: scale(0.95);
+        }
+
+        .upload-message {
+            margin: 0;
+            font-size: 13px;
+            text-align: right;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .upload-message.error {
+            color: #ffd4d4;
+        }
+
+        .upload-message.success {
+            color: #a8ffb0;
+        }
+
+        .light {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            opacity: 1;
+            background: #7d8798;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+            transition: all 0.3s;
+        }
+
+        .status-card.is-active.green .light-green,
+        .status-card.is-active.yellow .light-yellow,
+        .status-card.is-active.red .light-red {
+            opacity: 1;
+            box-shadow: 0 0 18px currentColor;
+        }
+
+        .status-card.is-active.green .light-green {
+            background: var(--green);
+            color: var(--green);
+        }
+
+        .status-card.is-active.yellow .light-yellow {
+            background: var(--yellow);
+            color: var(--yellow);
+        }
+
+        .status-card.is-active.red .light-red {
+            background: var(--red);
+            color: var(--red);
+        }
+
+        .status-text {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .status-label {
+            display: none;
+            margin-top: 14px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .status-card.is-active .status-label {
+            display: inline-block;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
+        }
+
+        @media (max-width: 700px) {
+            .status-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .traffic-light {
+                order: -1;
+            }
+
+            .status-actions {
+                width: 100%;
+                align-items: flex-start;
+            }
+
+            .upload-message {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="unam.png" alt="Logo UNAM" class="logo">
+
+    <div class="page">
+        <div class="header-card">
+            <h1>Documentos a subir y estatus de titulacion</h1>
+            <p>Semaforo de validacion: verde = correcta, amarillo = en proceso, rojo = no correcta.</p>
+            <div style="margin-top: 15px; font-size: 14px;">
+                <label for="num_cuenta">Número de cuenta:</label>
+                <input type="number" id="num_cuenta" placeholder="Ingrese su número de cuenta" style="padding: 5px; border-radius: 5px; border: none;">
+            </div>
+        </div>
+
+        <ul class="status-list">
+            <li class="status-card green" data-doc-id="hoja_consulta_dgae">
+                <div class="status-info">
+                    <h2>Hoja de consulta de la DGAE</h2>
+                    <span class="status-label">Correcta</span>
+                </div>
+                <div class="traffic-light">
+                    <span class="light light-red"></span>
+                    <span class="light light-yellow"></span>
+                    <span class="light light-green"></span>
+                </div>
+            </li>
+            <li class="status-card yellow" data-doc-id="no_adeudo_biblioteca">
+                <div class="status-info">
+                    <h2>No adeudo de biblioteca y donacion de $400</h2>
+                    <span class="status-label">En validacion</span>
+                </div>
+                <div class="traffic-light">
+                    <span class="light light-red"></span>
+                    <span class="light light-yellow"></span>
+                    <span class="light light-green"></span>
+                </div>
+            </li>
+            <li class="status-card red" data-doc-id="no_adeudo_laboratorio">
+                <div class="status-info">
+                    <h2>No adeudo de laboratorio</h2>
+                    <span class="status-label">No correcta</span>
+                </div>
+                <div class="traffic-light">
+                    <span class="light light-red"></span>
+                    <span class="light light-yellow"></span>
+                    <span class="light light-green"></span>
+                </div>
+            </li>
+            <!-- Los demás items se mantienen igual, solo agregar data-doc-id a cada uno -->
+        </ul>
+
+        <a href="frontend.html" class="back-link">Volver</a>
+    </div>
+
+    <script>
+        const MAX_FILE_SIZE = 5 * 1024 * 1024;
+        const DEFAULT_LIGHT_COLOR = "#7d8798";
+
+        function resetLights(card) {
+            card.querySelectorAll(".light").forEach((light) => {
+                light.style.background = DEFAULT_LIGHT_COLOR;
+                light.style.boxShadow = "inset 0 0 0 2px rgba(255, 255, 255, 0.08)";
+            });
+        }
+
+        function activateLight(card) {
+            resetLights(card);
+
+            let targetLight = null;
+            let activeColor = "";
+
+            if (card.classList.contains("green")) {
+                targetLight = card.querySelector(".light-green");
+                activeColor = "#31d27c";
+            } else if (card.classList.contains("yellow")) {
+                targetLight = card.querySelector(".light-yellow");
+                activeColor = "#ffd24d";
+            } else if (card.classList.contains("red")) {
+                targetLight = card.querySelector(".light-red");
+                activeColor = "#ff5f5f";
+            }
+
+            if (targetLight) {
+                targetLight.style.background = activeColor;
+                targetLight.style.boxShadow = "0 0 18px " + activeColor;
+            }
+        }
+
+        // Función para subir archivo
+        async function uploadFile(file, documento_id, num_cuenta, card, messageElement) {
+            const formData = new FormData();
+            formData.append('archivo', file);
+            formData.append('documento_id', documento_id);
+            formData.append('num_cuenta', num_cuenta);
+
+            try {
+                const response = await fetch('upload.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    card.classList.add('is-active');
+                    activateLight(card);
+                    messageElement.className = "upload-message success";
+                    messageElement.textContent = "✅ " + result.message;
+                    
+                    // Mostrar detalles de la actualización de BD
+                    if (result.detalles) {
+                        console.log("Actualizaciones BD:", result.detalles);
+                        // Opcional: Mostrar tooltip con detalles
+                        messageElement.title = JSON.stringify(result.detalles, null, 2);
+                    }
+                    
+                    return true;
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                messageElement.className = "upload-message error";
+                messageElement.textContent = "❌ Error: " + error.message;
+                card.classList.remove("is-active");
+                resetLights(card);
+                return false;
+            }
+        }
+
+        // Agregar botones de subida a cada tarjeta
+        document.querySelectorAll(".status-card").forEach((card, index) => {
+            resetLights(card);
+
+            const actions = document.createElement("div");
+            actions.className = "status-actions";
+
+            const input = document.createElement("input");
+            input.type = "file";
+            input.id = "upload-" + (index + 1);
+            input.className = "upload-input";
+            input.accept = ".pdf,application/pdf";
+
+            const label = document.createElement("label");
+            label.htmlFor = input.id;
+            label.className = "upload-button";
+            label.textContent = "Subir archivo PDF";
+
+            const message = document.createElement("p");
+            message.className = "upload-message";
+            message.textContent = "Ningún archivo subido";
+
+            input.addEventListener("change", async function () {
+                const file = input.files[0];
+                const num_cuenta = document.getElementById('num_cuenta').value;
+                const documento_id = card.getAttribute('data-doc-id');
+
+                if (!file) {
+                    card.classList.remove("is-active");
+                    resetLights(card);
+                    message.className = "upload-message";
+                    message.textContent = "Ningún archivo seleccionado";
+                    return;
+                }
+
+                if (!num_cuenta) {
+                    message.className = "upload-message error";
+                    message.textContent = "❌ Por favor ingrese su número de cuenta primero";
+                    input.value = "";
+                    return;
+                }
+
+                const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+
+                if (!isPdf) {
+                    input.value = "";
+                    card.classList.remove("is-active");
+                    resetLights(card);
+                    message.className = "upload-message error";
+                    message.textContent = "Formato no válido. Solo se permiten archivos PDF.";
+                    return;
+                }
+
+                if (file.size > MAX_FILE_SIZE) {
+                    input.value = "";
+                    card.classList.remove("is-active");
+                    resetLights(card);
+                    message.className = "upload-message error";
+                    message.textContent = "Archivo demasiado grande. Máximo 5 MB.";
+                    return;
+                }
+
+                // Mostrar mensaje de carga
+                message.className = "upload-message";
+                message.textContent = "⏳ Subiendo archivo...";
+                
+                // Subir archivo y actualizar BD
+                await uploadFile(file, documento_id, num_cuenta, card, message);
+            });
+
+            actions.appendChild(label);
+            actions.appendChild(input);
+            actions.appendChild(message);
+            card.appendChild(actions);
+        });
+    </script>
+</body>
+</html>

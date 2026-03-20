@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>titulacion fes cuautitlan</title>
+
+    <style>
+        body {
+            position: relative;
+            overflow-x: hidden;
+            margin: 0;
+            font-family: Arial;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+            padding: 0 0 70px;
+        }
+
+        .topcard {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #ffc400, #c27503);
+            padding: 24px 16px;
+            margin: 0 0 32px;
+        }
+        .topcard h2 {
+            margin: 0;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .topcard p {
+            margin: 8px 0 0;
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .logo {
+            position: absolute;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            max-width: 85%;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .card {
+            position: relative;
+            z-index: 2;
+            background: rgba(245, 189, 7, 0.1);
+            padding: 50px;
+            border-radius: 0px;
+            display: inline-block;
+        }
+        .card {
+            background: rgba(255,255,255,0.1);
+            padding: 60px;
+            border-radius: 15px;
+            align-content: center;
+            display: inline-block;
+        }
+        .main-card {
+            animation: fadeInCard 1s ease-out;
+        }
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: none;
+            z-index: 3;
+        }
+        .login-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            max-width: calc(100% - 32px);
+            background: rgba(255, 255, 255, 0.16);
+            border-radius: 18px;
+            padding: 28px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            display: none;
+            z-index: 4;
+        }
+        .login-card.visible {
+            animation: fadeInLogin 0.45s ease-out;
+        }
+        .login-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .login-card label {
+            display: block;
+            text-align: left;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        .login-card input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: none;
+            border-radius: 10px;
+        }
+        .login-card select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: none;
+            border-radius: 10px;
+        }
+        .login-card .close-btn {
+            margin-left: 12px;
+            background: rgba(255, 255, 255, 0.35);
+        }
+        .error-card {
+            display: none;
+            margin-top: 16px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(255, 94, 94, 0.2);
+            border: 1px solid rgba(255, 160, 160, 0.5);
+            color: #ffe5e5;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ffc400, #c27503);
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00ffcc;
+        }
+
+        @keyframes fadeInCard {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLogin {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -46%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topcard">
+        <h2>Universidad Nacional Autónoma de México
+        <p> Facultad de Estudios Superiores Cuautitlan
+
+        </p>
+
+        </h2>
+    </div>
+    <img src="unam.png" alt="Logo UNAM" class="logo">
+    <div class="card main-card">
+        <h1>Sistema de titulacion</h1>
+        <p>Sistema de titulacion universitaria
+    
+        </p>
+
+        <p>
+            Facultad de Estudios Superiores Cuautitlan
+        </p>
+        <button onclick="abrirLogin()">Haz clic</button>
+
+        <p id="mensaje"></p>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="cerrarLogin()"></div>
+
+    <div class="login-card" id="loginCard">
+        <h2>Iniciar sesi&oacute;n</h2>
+        <label for="matricula">Matricula</label>
+        <input type="text" id="matricula" name="matricula" placeholder="Ingresa tu matricula">
+
+        <label for="contrasena">Contrase&ntilde;a</label>
+        <input type="password" id="contrasena" name="contrasena" placeholder="Ingresa tu contrase&ntilde;a">
+
+        <label for="opcion-titulacion">Opci&oacute;n de titulaci&oacute;n</label>
+        <select id="opcion-titulacion" name="opcion-titulacion">
+            <option value="">Selecciona una opci&oacute;n</option>
+            <option value="opcion-1">Opci&oacute;n 1</option>
+            <option value="opcion-2">Opci&oacute;n 2</option>
+            <option value="opcion-3">Opci&oacute;n 3</option>
+        </select>
+        <form action="chart.html" method="POST">
+        
+    <input type="number" name="num_cuenta" placeholder="Número de cuenta" required>
+    <input type="password" name="password" placeholder="Contraseña" required>
+    <button type="submit">Ingresar</button>
+    
+</form>
+
+
+        
+        <button type="button" class="close-btn" onclick="cerrarLogin()">Cerrar</button>
+        <div class="error-card" id="errorCard">matricula o contrase&ntilde;a incorrectas</div>
+    </div>
+
+    <script>
+        const topcard = document.querySelector(".topcard");
+        if (topcard) {
+            topcard.innerHTML = "<h2>Universidad Nacional Autonoma de Mexico</h2><p>Facultad de Estudios Superiores Cuautitlan</p>";
+        }
+
+        function abrirLogin() {
+            const loginCard = document.getElementById("loginCard");
+
+            document.getElementById("overlay").style.display = "block";
+            loginCard.classList.remove("visible");
+            loginCard.style.display = "block";
+            void loginCard.offsetWidth;
+            loginCard.classList.add("visible");
+            document.getElementById("mensaje").innerText = "";
+            document.getElementById("errorCard").style.display = "none";
+        }
+
+        function cerrarLogin() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("loginCard").style.display = "none";
+            document.getElementById("loginCard").classList.remove("visible");
+            document.getElementById("errorCard").style.display = "none";
+        }
+
+        function validarLogin() {
+            const matricula = document.getElementById("matricula").value.trim();
+            const contrasena = document.getElementById("contrasena").value.trim();
+            const errorCard = document.getElementById("errorCard");
+
+            if (matricula === "323332855" && contrasena === "24092007") {
+                window.location.href = "chart.html";
+                return;
+            }
+
+            errorCard.style.display = "block";
+        }
+    </script>
+
+</body>
+</html>

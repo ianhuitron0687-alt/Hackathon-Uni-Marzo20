@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Upload Page</title>
+</head>
+<body>
+
+    <h2>Upload an Image</h2>
+
+    <!-- 
+        The 'enctype' attribute is required when your form includes file uploads.
+        The 'action' attribute should point to your server-side script (e.g., "upload.php").
+    -->
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+        <label for="fileToUpload">Select image to upload:</label>
+        <!-- The 'accept' attribute restricts the file picker to image formats -->
+        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*">
+        <input type="submit" value="Upload Image" name="submit">
+    </form>
+
+</body>
+</html>

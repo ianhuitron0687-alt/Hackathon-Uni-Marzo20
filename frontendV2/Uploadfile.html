@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Validation</title>
+    <style>
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            display: none; /* Hidden by default */
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+        .preview-image {
+            max-width: 200px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload an Image (JPG, JPEG, PNG, GIF only)</h2>
+
+    <!-- The 'accept' attribute acts as a hint to the browser's file picker -->
+    <input type="file" id="fileInput" accept=".jpg, .jpeg, .png, .gif" onchange="return fileValidation()">
+    
+    <div id="errorMessage" class="error-message"></div>
+    <img id="imagePreview" class="preview-image" src="#" alt="Image Preview">
+
+    <!-- Note: A full file upload requires server-side handling (e.g., PHP, Node.js) with the 'enctype="multipart/form-data"' attribute on a form element. This example is client-side validation only. -->
+
+    <script>
+        function fileValidation() {
+            const fileInput = document.getElementById('fileInput');
+            const errorMessage = document.getElementById('errorMessage');
+            const imagePreview = document.getElementById('imagePreview');
+            const filePath = fileInput.value;
+
+            // Allowing file types using a regular expression
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+            errorMessage.style.display = 'none'; // Hide previous error
+            imagePreview.style.display = 'none'; // Hide previous preview
+            imagePreview.src = '#'; // Clear previous preview
+
+            if (!allowedExtensions.exec(filePath)) {
+                // Invalid file type
+                errorMessage.textContent = 'Invalid file type. Only JPG, JPEG, PNG, and GIF files are allowed.';
+                errorMessage.style.display = 'block';
+                fileInput.value = ''; // Clear the input field
+                return false;
+            } else {
+                // Valid file type, show image preview
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
