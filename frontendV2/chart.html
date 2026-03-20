@@ -28,16 +28,42 @@
         }
 
         .logo {
-            position: absolute;
-            top: 180px;
+            position: fixed;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             width: 500px;
             max-width: 85%;
             opacity: 0.4;
             z-index: 0;
             pointer-events: none;
         }
+
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: var(--size, 10px);
+            height: var(--size, 10px);
+            background: rgba(255, 255, 255, 0.68);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.28);
+            animation: bubbleUp var(--duration, 16s) linear infinite;
+        }
+
+        .particle:nth-child(1) { left: 9%; --size: 8px; --duration: 13s; animation-delay: -2s; }
+        .particle:nth-child(2) { left: 19%; --size: 14px; --duration: 18s; animation-delay: -8s; }
+        .particle:nth-child(3) { left: 31%; --size: 10px; --duration: 15s; animation-delay: -5s; }
+        .particle:nth-child(4) { left: 44%; --size: 18px; --duration: 20s; animation-delay: -11s; }
+        .particle:nth-child(5) { left: 58%; --size: 9px; --duration: 14s; animation-delay: -4s; }
+        .particle:nth-child(6) { left: 70%; --size: 16px; --duration: 22s; animation-delay: -9s; }
+        .particle:nth-child(7) { left: 83%; --size: 11px; --duration: 17s; animation-delay: -6s; }
+        .particle:nth-child(8) { left: 92%; --size: 13px; --duration: 19s; animation-delay: -13s; }
 
         .page {
             position: relative;
@@ -144,24 +170,24 @@
             box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08);
         }
 
-        .status-card.is-active.green .light-green,
-        .status-card.is-active.yellow .light-yellow,
-        .status-card.is-active.red .light-red {
+        .status-card.is-active.status-green .light-green,
+        .status-card.is-active.status-yellow .light-yellow,
+        .status-card.is-active.status-red .light-red {
             opacity: 1;
             box-shadow: 0 0 18px currentColor;
         }
 
-        .status-card.is-active.green .light-green {
+        .status-card.is-active.status-green .light-green {
             background: var(--green);
             color: var(--green);
         }
 
-        .status-card.is-active.yellow .light-yellow {
+        .status-card.is-active.status-yellow .light-yellow {
             background: var(--yellow);
             color: var(--yellow);
         }
 
-        .status-card.is-active.red .light-red {
+        .status-card.is-active.status-red .light-red {
             background: var(--red);
             color: var(--red);
         }
@@ -198,6 +224,68 @@
             background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
         }
 
+        .submit-wrap {
+            display: none;
+            justify-content: center;
+            margin-top: 28px;
+        }
+
+        .submit-wrap.visible {
+            display: flex;
+        }
+
+        .submit-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.58);
+            display: none;
+            z-index: 4;
+        }
+
+        .confirm-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 360px;
+            max-width: calc(100% - 32px);
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 18px;
+            padding: 28px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+            display: none;
+            z-index: 5;
+            text-align: center;
+        }
+
+        .confirm-card p {
+            margin: 0 0 22px;
+            font-weight: bold;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .cancel-button {
+            background: rgba(255, 255, 255, 0.35);
+            color: white;
+        }
+
         @media (max-width: 700px) {
             .status-card {
                 flex-direction: column;
@@ -217,19 +305,44 @@
                 text-align: left;
             }
         }
+
+        @keyframes bubbleUp {
+            0% {
+                transform: translateY(110vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.62;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(18px) rotate(220deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+    </div>
+
     <img src="unam.png" alt="Logo UNAM" class="logo">
 
     <div class="page">
         <div class="header-card">
             <h1>Documentos a subir y estatus de titulacion</h1>
-            <p>Semaforo de validacion: verde = correcta, amarillo = en proceso, rojo = no correcta.</p>
+            <p>Semaforo de validacion: verde = válido, amarillo = en revisión rojo = inválido</p>
         </div>
 
         <ul class="status-list">
-            <li class="status-card green">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Hoja de consulta de la DGAE</h2>
                 <span class="status-label">Correcta</span>
@@ -240,7 +353,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card yellow">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>No adeudo de biblioteca y donacion de $400</h2>
                 <span class="status-label">En validacion</span>
@@ -251,7 +364,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card red">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>No adeudo de laboratorio</h2>
                 <span class="status-label">No correcta</span>
@@ -262,7 +375,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card green">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Votos aprobatorios (Aplica cuando realizan examen profesional)</h2>
                 <span class="status-label">Correcta</span>
@@ -273,7 +386,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card yellow">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>6 trabajos impresos (Aplica cuando realizan examen profesional)</h2>
                 <span class="status-label">En validacion</span>
@@ -284,7 +397,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card red">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Encuesta de egresados (Cotejo)</h2>
                 <span class="status-label">No correcta</span>
@@ -295,7 +408,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card green">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Pago de tramite de titulacion (Original y copia)</h2>
                 <span class="status-label">Correcta</span>
@@ -306,7 +419,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card yellow">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Pago de pergamino con la hoja referenciada (Original y copia)</h2>
                 <span class="status-label">En validacion</span>
@@ -317,7 +430,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card red">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Pago de cartulina imitacion pergamino con la hoja referenciada (Original y copia)</h2>
                 <span class="status-label">No correcta</span>
@@ -328,7 +441,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card green">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Pago de papel seguridad (Original y copia)</h2>
                 <span class="status-label">Correcta</span>
@@ -339,7 +452,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card yellow">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>6 fotografias</h2>
                 <span class="status-label">En validacion</span>
@@ -350,7 +463,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card red">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Autorizacion de transferencia de informacion a la DGP de la SEP</h2>
                 <span class="status-label">No correcta</span>
@@ -361,7 +474,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card green">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Solicitud de expedicion de titulo y/o grado</h2>
                 <span class="status-label">Correcta</span>
@@ -372,7 +485,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card yellow">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Certificado de estudios licenciatura (2 copias con nombre y firmada de recibido)</h2>
                 <span class="status-label">En validacion</span>
@@ -383,7 +496,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card red">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Servicio social original o digital con codigo QR y codigo de barras</h2>
                 <span class="status-label">No correcta</span>
@@ -394,7 +507,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card green">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Constancia de Verificacion del analisis de coincidencias (Original)</h2>
                 <span class="status-label">Correcta</span>
@@ -405,7 +518,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card yellow">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Protesta de integridad y honestidad academica con o sin replica oral (segun corresponda)</h2>
                 <span class="status-label">En validacion</span>
@@ -416,7 +529,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card red">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Constancia de idioma</h2>
                 <span class="status-label">No correcta</span>
@@ -427,7 +540,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card green">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Formato de conformacion de Carpeta de Titulacion</h2>
                 <span class="status-label">Correcta</span>
@@ -438,7 +551,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card yellow">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Certificado de estudios nivel bachillerato (2 copias con nombre y firmada de recibido)</h2>
                 <span class="status-label">En validacion</span>
@@ -449,7 +562,7 @@
                     <span class="light light-green"></span>
                 </div>
             </li>
-            <li class="status-card red">
+            <li class="status-card">
                 <div class="status-info">
                 <h2>Certificado de estudios de posgrado (Solo aplica si tu opcion de titulacion es por estudios de Posgrado.)</h2>
                 <span class="status-label">No correcta</span>
@@ -462,33 +575,84 @@
             </li>
         </ul>
 
+        <div class="submit-wrap" id="submitWrap">
+            <button type="button" class="submit-button" onclick="openConfirm()">Solicitar tramite</button>
+        </div>
+
         <a href="frontend.html" class="back-link">Volver</a>
     </div>
 
+    <div class="confirm-overlay" id="confirmOverlay" onclick="closeConfirm()"></div>
+
+    <div class="confirm-card" id="confirmCard">
+        <p>al confirmar, el tramite para su titulacion se realizara</p>
+        <div class="confirm-actions">
+            <button type="button" onclick="confirmRequest()">Confirmar</button>
+            <button type="button" class="cancel-button" onclick="closeConfirm()">Cancelar</button>
+        </div>
+    </div>
+
     <script>
+        const navigationEntries = performance.getEntriesByType("navigation");
+        if (navigationEntries.length > 0 && navigationEntries[0].type === "reload") {
+            window.location.replace("frontend.html");
+        }
+
         const MAX_FILE_SIZE = 5 * 1024 * 1024;
         const DEFAULT_LIGHT_COLOR = "#7d8798";
+        const STATUS_CLASSES = ["status-green", "status-yellow", "status-red"];
+
+        function updateSubmitButton() {
+            const cards = Array.from(document.querySelectorAll(".status-card"));
+            const allValid = cards.length > 0 && cards.every((card) =>
+                card.classList.contains("is-active") && card.classList.contains("status-green")
+            );
+
+            document.getElementById("submitWrap").classList.toggle("visible", allValid);
+        }
+
+        function openConfirm() {
+            document.getElementById("confirmOverlay").style.display = "block";
+            document.getElementById("confirmCard").style.display = "block";
+        }
+
+        function closeConfirm() {
+            document.getElementById("confirmOverlay").style.display = "none";
+            document.getElementById("confirmCard").style.display = "none";
+        }
+
+        function confirmRequest() {
+            alert("El tramite para su titulacion se realizara.");
+            closeConfirm();
+        }
 
         function resetLights(card) {
+            card.classList.remove("is-active");
+            card.classList.remove(...STATUS_CLASSES);
             card.querySelectorAll(".light").forEach((light) => {
                 light.style.background = DEFAULT_LIGHT_COLOR;
                 light.style.boxShadow = "inset 0 0 0 2px rgba(255, 255, 255, 0.08)";
             });
+            const label = card.querySelector(".status-label");
+            if (label) {
+                label.textContent = "";
+            }
         }
 
-        function activateLight(card) {
-            resetLights(card);
+        function activateLight(card, status, labelText) {
+            card.classList.remove(...STATUS_CLASSES);
+            card.classList.add("is-active", "status-" + status);
 
             let targetLight = null;
             let activeColor = "";
 
-            if (card.classList.contains("green")) {
+            if (status === "green") {
                 targetLight = card.querySelector(".light-green");
                 activeColor = "#31d27c";
-            } else if (card.classList.contains("yellow")) {
+            } else if (status === "yellow") {
                 targetLight = card.querySelector(".light-yellow");
                 activeColor = "#ffd24d";
-            } else if (card.classList.contains("red")) {
+            } else if (status === "red") {
                 targetLight = card.querySelector(".light-red");
                 activeColor = "#ff5f5f";
             }
@@ -496,6 +660,11 @@
             if (targetLight) {
                 targetLight.style.background = activeColor;
                 targetLight.style.boxShadow = "0 0 18px " + activeColor;
+            }
+
+            const label = card.querySelector(".status-label");
+            if (label) {
+                label.textContent = labelText;
             }
         }
 
@@ -524,10 +693,10 @@
                 const file = input.files[0];
 
                 if (!file) {
-                    card.classList.remove("is-active");
                     resetLights(card);
                     message.className = "upload-message";
                     message.textContent = "Ningun archivo se ha subido";
+                    updateSubmitButton();
                     return;
                 }
 
@@ -535,26 +704,29 @@
 
                 if (!isPdf) {
                     input.value = "";
-                    card.classList.remove("is-active");
                     resetLights(card);
+                    activateLight(card, "red", "Invalido");
                     message.className = "upload-message error";
                     message.textContent = "Formato no valido. Solo se permiten archivos PDF.";
+                    updateSubmitButton();
                     return;
                 }
 
                 if (file.size > MAX_FILE_SIZE) {
                     input.value = "";
-                    card.classList.remove("is-active");
                     resetLights(card);
+                    activateLight(card, "red", "Invalido");
                     message.className = "upload-message error";
                     message.textContent = "Archivo demasiado grande. Maximo 5 MB.";
+                    updateSubmitButton();
                     return;
                 }
 
-                card.classList.add("is-active");
-                activateLight(card);
+                resetLights(card);
+                activateLight(card, "yellow", "En revision");
                 message.className = "upload-message";
                 message.textContent = "Archivo cargado: " + file.name;
+                updateSubmitButton();
             });
 
             actions.appendChild(label);
@@ -562,6 +734,8 @@
             actions.appendChild(message);
             card.appendChild(actions);
         });
+
+        updateSubmitButton();
     </script>
 </body>
 </html>
