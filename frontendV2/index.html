@@ -277,16 +277,16 @@
         <span class="particle"></span>
     </div>
 
-    <div class="topcard">
-        <img src="unam-chiquito.png" alt="Logo UNAM pequeno" class="topcard-logo">
-        <div class="topcard-text">
-            <h2>Universidad Nacional Autonoma de Mexico</h2>
-            <p>Facultad de Estudios Superiores Cuautitlan</p>
-        </div>
-        <img src="https://raw.githubusercontent.com/ianhuitron0687-alt/Hackathon-Uni-Marzo20/refs/heads/main/frontendV2/logfes.png" alt="Logo FES" class="topcard-logo">
+<div class="topcard">
+    <img src="frontendV2/unam-chiquito.png" alt="Logo UNAM pequeno" class="topcard-logo">
+    <div class="topcard-text">
+        <h2>Universidad Nacional Autónoma de México</h2>
+        <p>Facultad de Estudios Superiores Cuautitlán</p>
     </div>
+    <img src="https://raw.githubusercontent.com/ianhuitron0687-alt/Hackathon-Uni-Marzo20/refs/heads/main/frontendV2/logfes.png" alt="Logo FES" class="topcard-logo">
+</div>
 
-    <img src="unam-main.png" alt="Logo UNAM" class="logo">
+<img src="frontendV2/unam-main.png" alt="Logo UNAM" class="logo">
 
     <div class="card main-card">
         <h1>Plataforma integral de titulacion</h1>
@@ -340,12 +340,13 @@
             document.getElementById("errorCard").style.display = "none";
         }
 
-        function validarLogin() {
-            const matricula = document.getElementById("matricula").value.trim();
-            const contrasena = document.getElementById("contrasena").value.trim();
-            const errorCard = document.getElementById("errorCard");
+      function validarLogin() {
+        const matricula = document.getElementById("matricula").value.trim();
+        const contrasena = document.getElementById("contrasena").value.trim();
+        const errorCard = document.getElementById("errorCard");
 
-           if (matricula === "323332855" && contrasena === "24092007") {
+        // Credenciales (Recuerda que estas son visibles en el cliente)
+        if (matricula === "323332855" && contrasena === "24092007") {
             // REDIRECCIÓN CORREGIDA CON LA RUTA DE LA CARPETA
             window.location.href = "frontendV2/chart.html"; 
             return;
