@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi primer frontend</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #00c6ff;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00ffcc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h1>Sistema de titulacion</h1>
+        <p>Sistema de titulacion universitaria
+    
+        </p>
+
+        <p>
+            Facultad de Estudios Superiores Cuautitlan
+        </p>
+        <button onclick="saludar()">Haz clic</button>
+
+        <p id="mensaje"></p>
+    </div>
+
+    <script>
+        function saludar() {
+            document.getElementById("mensaje").innerText = "sigue los siguientes pasos";
+        }
+    </script>
+
+</body>
+</html>
